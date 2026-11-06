@@ -1,0 +1,19 @@
+[Unit]
+Description=MAHASARAKHAM offline Kiwix library
+After=network.target
+RequiresMountsFor=/mnt/data/kiwix
+
+[Service]
+Type=simple
+User=@SERVICE_USER@
+Group=@SERVICE_USER@
+ExecStart=/usr/bin/kiwix-serve --address=127.0.0.1 --port=8091 --urlRootLocation=kiwix --library --monitorLibrary --blockexternal /mnt/data/kiwix/library.xml
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+
+[Install]
+WantedBy=multi-user.target

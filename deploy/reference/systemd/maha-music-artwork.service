@@ -1,0 +1,21 @@
+[Unit]
+Description=MAHA album artwork lookup and offline fallback
+After=network.target maha-library-api.service
+RequiresMountsFor=/mnt/data/survival-library/music
+[Service]
+User=vhenderson
+Group=vhenderson
+ExecStart=/usr/bin/python3 /opt/maha-library-api/music_art_worker.py
+Environment=PYTHONPATH=/opt/maha-library-api/music-vendor
+Restart=on-failure
+RestartSec=10
+UMask=0022
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/mnt/data/survival-library/music
+MemoryMax=768M
+TasksMax=32
+[Install]
+WantedBy=multi-user.target

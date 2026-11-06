@@ -1,0 +1,32 @@
+/* Shared Books and Knowledge catalog layout. Keep this after page styles. */
+.catalog-search .search{display:flex;align-items:center;gap:12px;width:100%;max-width:680px;min-height:48px;margin:0 0 20px;padding:8px 9px 8px 16px;border:1px solid var(--line);border-radius:5px;background:#faf9f3}
+.catalog-search .search input{min-width:0;width:100%;padding:0;border:0;background:none;color:var(--ink);font:13px 'Segoe UI',sans-serif;outline:0}
+.catalog-search .search:focus-within{outline:2px solid var(--orange);outline-offset:2px}
+.catalog-controls{display:flex;align-items:end;flex-wrap:wrap;gap:12px 18px;margin:0 0 20px}
+.catalog-controls label,.filters.catalog-controls label:first-child{display:flex;flex:0 1 auto;flex-direction:column;align-items:stretch;gap:6px;min-width:0;font-size:11px;color:var(--muted)}
+.catalog-controls select,.catalog-controls .tag-picker summary{appearance:none;-webkit-appearance:none;display:flex;align-items:center;box-sizing:border-box;height:40px;min-height:40px;max-width:100%;border:1px solid var(--line);border-radius:5px;background-color:#faf9f3;color:var(--ink);font:13px 'Segoe UI',sans-serif;padding:8px 34px 8px 12px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2322392e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;cursor:pointer}
+.catalog-controls select:focus-visible,.catalog-controls summary:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.catalog-controls>label{min-width:160px}
+.catalog-controls>label>select,.catalog-controls>.tag-picker summary{width:160px;min-width:160px}
+.catalog-controls>.tag-picker summary{list-style:none;text-decoration:none}
+.catalog-controls>.tag-picker summary::-webkit-details-marker{display:none}
+.catalog-controls>.tag-picker summary::marker{content:''}
+.catalog-search+.chips{margin-top:0;margin-bottom:24px}
+.catalog-controls label{line-height:1.5}
+@media(max-width:650px){.catalog-search .search{max-width:none}.catalog-search .key{display:none}.catalog-controls{gap:12px}.filters.catalog-controls label{flex:0 1 auto;min-width:0}}
+/* Shared catalog alignment, including the Home shelf. */
+.shelves .catalog-search .search,.knowledge-shelves .catalog-search .search,.preserved-shelves .catalog-search .search{max-width:none;width:100%}
+#library .chips button:last-child,#collection-chips button:last-child{margin-left:0}
+body .repair-controls-row>button{margin:0;box-sizing:border-box;height:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;line-height:1.25;vertical-align:middle}
+#library #result-count,.knowledge-shelves #count{margin:8px 0 16px;line-height:1.5}
+#library .books{padding-left:0}
+
+/* Filters open at their trigger, with viewport clamping instead of a distant drawer. */
+dialog.ui-filter-panel{position:fixed;inset:auto;margin:0!important;width:min(360px,calc(100vw - 24px));height:auto!important;max-height:calc(100dvh - 24px);border-radius:12px!important;overflow-y:auto;overscroll-behavior:contain}
+dialog.ui-filter-panel .catalog-controls,dialog.ui-filter-panel .music-filters{margin-bottom:0;gap:14px}dialog.ui-filter-panel .ui-panel-note{margin:0 0 14px;font-size:12px}
+
+/* Browsing uses available space; reading pages keep their own line lengths. */
+body.repair-catalog>main.wrap{width:100%;max-width:none;padding-inline:clamp(16px,3vw,48px);box-sizing:border-box}
+.repair-catalog .books,.repair-catalog .archive-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.repair-catalog .music-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+@media(max-width:650px){.repair-catalog .books,.repair-catalog .archive-grid,.repair-catalog .music-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

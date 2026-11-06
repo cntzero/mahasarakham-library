@@ -1,0 +1,112 @@
+server {
+    listen @LAN_IP@:80 default_server;
+    listen @LAN_IP@:443 ssl;
+    ssl_certificate /etc/maha-library/pki/server.crt;
+    ssl_certificate_key /etc/maha-library/pki/server.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    server_name _;
+    # BEGIN MAHA LOCAL ACCOUNTS
+    if ($scheme = http) { return 302 https://@LAN_IP@$request_uri; }
+    auth_request /_maha_auth;
+    error_page 401 = /login.html;
+    location = /_maha_auth {
+        internal;
+        auth_request off;
+        proxy_pass http://127.0.0.1:8123/api/library/auth-check;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header Cookie $http_cookie;
+    }
+    location = /login.html { auth_request off; }
+    location = /login.js { auth_request off; }
+    location = /upload.css { auth_request off; }
+    # END MAHA LOCAL ACCOUNTS
+    root /srv/www/maha-library/current/dist;
+    index index.html;
+    autoindex off;
+    allow @LAN_CIDR@;
+    allow 127.0.0.1;
+    deny all;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy no-referrer always;
+    add_header X-Frame-Options SAMEORIGIN always;
+
+    location = /kiwix { return 302 /kiwix/; }
+    location /kiwix/ {
+        proxy_pass http://127.0.0.1:8091;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_read_timeout 120s;
+        proxy_buffering off;
+    }
+    
+    # BEGIN MAHA BOOK UPLOADS
+    location /api/library/ {
+        auth_request off;
+        proxy_set_header X-Real-IP $remote_addr;
+        client_max_body_size 1024m;
+        client_body_timeout 180s;
+        proxy_pass http://127.0.0.1:8123;
+        proxy_set_header Host $http_host;
+        proxy_request_buffering off;
+        proxy_read_timeout 900s;
+        proxy_send_timeout 180s;
+    }
+    location /uploads/originals/ {
+        alias /mnt/data/survival-library/imported-books/originals/;
+        limit_except GET { deny all; }
+        add_header Content-Security-Policy "sandbox; default-src 'none'" always;
+    }
+    location /uploads/readable/ {
+        alias /mnt/data/survival-library/imported-books/readable/;
+        limit_except GET { deny all; }
+    }
+    location /uploads/covers/ {
+        alias /mnt/data/survival-library/imported-books/covers/;
+        limit_except GET { deny all; }
+    }
+    # END MAHA BOOK UPLOADS
+    # Preserved website mirror, protected by the existing library login.
+    location /archive/askaprepper/ {
+        alias /mnt/data/survival-library/web-articles/originals/askaprepper/;
+        autoindex off;
+        limit_except GET { deny all; }
+        add_header Content-Security-Policy "sandbox allow-same-origin; default-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; base-uri 'self'; form-action 'none'" always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy no-referrer always;
+        add_header X-Frame-Options SAMEORIGIN always;
+    }
+    # BEGIN MAHA MUSIC
+    location /music-media/tracks/ {
+        alias /mnt/data/survival-library/music/tracks/;
+        autoindex off;
+        types { audio/mpeg mp3; }
+        limit_except GET { deny all; }
+        add_header X-Content-Type-Options nosniff always;
+    }
+    location /music-media/covers/ {
+        alias /mnt/data/survival-library/music/covers/;
+        autoindex off;
+        types { image/jpeg jpg; }
+        limit_except GET { deny all; }
+        add_header X-Content-Type-Options nosniff always;
+    }
+    # END MAHA MUSIC
+    location / { try_files $uri $uri/ =404; }
+    location /files/humble/ {
+        alias /mnt/data/survival-library/humble-books/originals/;
+        limit_except GET { deny all; }
+    }
+    location /files/bushcraft/ {
+        alias /mnt/data/survival-library/bushcraft/epub/;
+        limit_except GET { deny all; }
+    }
+    location /files/backwoods/ {
+        alias /mnt/data/survival-library/backwoods/originals/;
+        limit_except GET { deny all; }
+    }
+    location /files/who/ {
+        alias /mnt/data/survival-library/who-wash/;
+        limit_except GET { deny all; }
+    }
+}

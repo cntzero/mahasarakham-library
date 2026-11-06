@@ -1,0 +1,20 @@
+'use strict';
+function dailyBookPicks(books,seed){
+ const score=id=>{let h=2166136261;for(const c of seed+'|'+id){h^=c.charCodeAt(0);h=Math.imul(h,16777619);}return h>>>0;};
+ const eligible=books.filter(b=>b.cover&&b.sources?.length).slice().sort((a,b)=>score(a.id)-score(b.id)||a.id.localeCompare(b.id));
+ const topics=new Set(),picks=[];
+ for(const book of eligible)if(!topics.has(book.topic)){topics.add(book.topic);picks.push(book);}
+ for(const book of eligible)if(!picks.some(b=>b.id===book.id))picks.push(book);
+ return picks.slice(0,16);
+}
+
+(()=>{
+  const books=document.getElementById('books');books.tabIndex=0;books.setAttribute('role','region');books.setAttribute('aria-label','Book catalog, scroll for more books');const hint=document.createElement('p');hint.className='scroll-hint';hint.textContent='Scroll to browse all books. Drag the bottom edge to resize on desktop.';books.before(hint);
+  let loading=false;
+  books.addEventListener('scroll',()=>{if(!loading&&books.scrollTop+books.clientHeight>=books.scrollHeight-250&&!document.getElementById('more').hidden){loading=true;const position=books.scrollTop;limit+=24;render();books.scrollTop=position;requestAnimationFrame(()=>loading=false)}});
+  const originalRender=render;let featured='',shuffleSeed='';const day=new Date().toLocaleDateString('en-CA');const stamp=document.querySelector('.stamp');stamp.replaceChildren();const caption=document.createElement('span');caption.textContent='DAILY DISCOVERIES';const shuffle=document.createElement('button');shuffle.className='shuffle-picks';shuffle.textContent='Surprise me';shuffle.onclick=()=>{shuffleSeed=String(Date.now());featured='';render();const shelf=document.querySelector('.shelf');shelf.scrollLeft=0;requestAnimationFrame(()=>shelf.scrollTo({left:0,behavior:'instant'}));};stamp.append(caption,shuffle);
+  render=function(){originalRender();const key=day+shuffleSeed+catalog.map(b=>b.id).join('|');if(featured!==key&&catalog.length){featured=key;document.querySelectorAll('.shelf-arrow').forEach(b=>b.remove());const shelf=document.querySelector('.shelf');shelf.setAttribute('tabindex','0');shelf.setAttribute('aria-label','Featured books: scroll left or right');shelf.replaceChildren();for(const b of dailyBookPicks(catalog,day+shuffleSeed)){const a=document.createElement('a');a.className='spine real-book discovery-item discovery-book';a.href=bookUrl(b,b.sources[0]);a.setAttribute('aria-label','Read '+b.title);a.onclick=e=>{e.preventDefault();openBook(b)};const img=document.createElement('img');img.src=b.cover;img.alt=b.title;img.loading='lazy';a.append(img);shelf.append(a)}for(const direction of [-1,1]){const button=document.createElement('button');button.className='shelf-arrow discovery-arrow '+(direction<0?'prev previous':'next');const icon=document.createElementNS('http://www.w3.org/2000/svg','svg');icon.setAttribute('viewBox','0 0 24 24');icon.setAttribute('aria-hidden','true');const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',direction<0?'M15 6l-6 6 6 6':'M9 6l6 6-6 6');icon.append(path);button.append(icon);button.setAttribute('aria-label',direction<0?'Previous featured books':'Next featured books');button.onclick=()=>shelf.scrollBy({left:direction*shelf.clientWidth*.8,behavior:'smooth'});shelf.parentElement.append(button)}}};
+  document.querySelectorAll('[data-view="knowledge"]').forEach(b=>b.onclick=()=>location.href='knowledge.html');
+  if(catalog.length)render();
+})();
+const toTop=document.createElement('button');toTop.className='to-top';toTop.textContent='\u2191 Back to top';toTop.hidden=true;toTop.onclick=()=>window.scrollTo({top:0,behavior:'smooth'});document.body.append(toTop);function updateTopButton(){const footer=document.querySelector('footer');toTop.hidden=window.scrollY<450||Boolean(footer&&footer.getBoundingClientRect().top<window.innerHeight);}window.addEventListener('scroll',updateTopButton,{passive:true});window.addEventListener('resize',updateTopButton);new IntersectionObserver(updateTopButton).observe(document.querySelector('footer'));

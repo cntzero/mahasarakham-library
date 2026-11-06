@@ -1,0 +1,33 @@
+/* Shared Books / Music / Knowledge discovery component. Books is the reference. */
+.discovery-hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:65px;align-items:start;padding:64px 0 45px;min-height:424px}
+.discovery-hero>div:first-child{min-width:0;align-self:center}
+.discovery-hero h1{margin:0 0 25px;font:normal clamp(48px,4.5vw,74px)/1.03 Georgia,serif;letter-spacing:-2px;max-width:none}
+.discovery-hero .eyebrow{margin:0 0 25px}
+.discovery-hero .intro{margin:0;max-width:550px}
+.discovery-landscape.landscape{height:315px;min-width:0;width:100%;max-width:none;margin:0;padding:0 45px 38px;display:grid;align-items:end;position:relative;overflow:hidden;background:#e3e7d7;border-radius:150px 150px 8px 8px}
+.discovery-landscape .discovery-shelf{height:215px;min-width:0;position:relative;display:flex;gap:9px;align-items:flex-end;justify-content:flex-start;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#8a957f #f7f6ef;filter:none;padding:7px 10px 18px}
+.discovery-shelf>.discovery-item{display:block;flex:0 0 auto;min-width:0;margin:0;padding:0;border:0;background:transparent;color:var(--ink);text-align:left;text-decoration:none;cursor:pointer;scroll-snap-align:start;transition:transform .22s ease,filter .22s ease}
+.discovery-shelf>.discovery-item:hover,.discovery-shelf>.discovery-item:focus-visible{transform:translateY(-6px);filter:drop-shadow(0 8px 5px #22392e30)}
+.discovery-shelf>.discovery-item:focus-visible{outline:3px solid #b34825;outline-offset:3px}
+.discovery-shelf .discovery-item.discovery-book{flex:0 0 108px;width:108px;height:175px;aspect-ratio:auto;transform:none}
+.discovery-shelf .discovery-item.discovery-book:nth-child(even){height:188px}
+.discovery-shelf .discovery-item.discovery-book:hover,.discovery-shelf .discovery-item.discovery-book:focus-visible{transform:translateY(-6px)}
+.discovery-shelf .discovery-book img{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom}
+.discovery-shelf .discovery-record{width:150px;height:150px}
+.discovery-shelf .discovery-record .album-image{width:100%;height:100%;aspect-ratio:1;border-radius:3px}
+.discovery-title,.discovery-status{position:absolute!important;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.discovery-site-art{width:108px;height:175px;border-radius:3px;display:flex;flex-direction:column;justify-content:space-between;padding:12px;background:var(--site-color,#385747);color:var(--site-ink,#f1edda);box-shadow:3px 6px 12px #22392e25;overflow:hidden}
+.discovery-site-art strong{font:17px Georgia;overflow-wrap:anywhere;text-decoration:none}
+.discovery-site-art small{font:8px 'Segoe UI',sans-serif;text-transform:uppercase;letter-spacing:1px;text-decoration:none}
+.discovery-site-art img{width:28px;height:28px;object-fit:contain}
+.discovery-landscape .discovery-arrow{position:absolute;z-index:2;top:55%;transform:translateY(-50%);display:grid;place-items:center;padding:0;line-height:1;width:34px;height:34px;border:1px solid #a8b79c;border-radius:50%;background:#f5f3ebeb;color:#22392e;cursor:pointer}
+.discovery-landscape .discovery-arrow.previous{left:7px}.discovery-landscape .discovery-arrow.next{right:7px}
+.discovery-arrow svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.discovery-arrow:disabled{opacity:.4;cursor:default}
+.discovery-landscape .discovery-caption{position:absolute;bottom:9px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:12px;text-align:center;font:9px 'Segoe UI',sans-serif;letter-spacing:2px;color:#53654c}
+.discovery-caption button{font:10px 'Segoe UI',sans-serif;letter-spacing:0;line-height:normal;min-height:24px;border:1px solid #849674;background:#f5f3ebd9;color:#22392e;border-radius:14px;padding:4px 10px;cursor:pointer}
+.discovery-caption button:hover{background:#fffdf7}
+@media(min-width:1500px){.discovery-hero{gap:100px}}
+@media(max-width:1000px){.discovery-hero{gap:25px;min-height:404px}.discovery-landscape.landscape{height:295px}}
+@media(max-width:650px){.discovery-hero{grid-template-columns:1fr;min-height:0;padding:30px 0 45px;gap:24px}.discovery-hero h1{font-size:49px}.discovery-landscape.landscape{height:270px;max-width:460px;margin:0 auto;padding:0 42px 48px}.discovery-landscape .discovery-shelf{height:191px}.discovery-shelf .discovery-item.discovery-book{flex-basis:90px;width:90px;height:154px}.discovery-shelf .discovery-item.discovery-book:nth-child(even){height:166px}.discovery-site-art{width:90px;height:154px;padding:10px}.discovery-site-art strong{font-size:15px}.discovery-shelf .discovery-record{width:130px;height:130px}.discovery-landscape .discovery-arrow{width:40px;height:44px}.discovery-landscape .discovery-arrow.previous{left:1px}.discovery-landscape .discovery-arrow.next{right:1px}.discovery-landscape .discovery-caption{bottom:6px;font-size:8px;gap:6px}.discovery-caption button{min-height:36px}}
+@media(prefers-reduced-motion:reduce){.discovery-shelf>.discovery-item{transition:none}.discovery-shelf>.discovery-item:hover,.discovery-shelf>.discovery-item:focus-visible{transform:none;filter:none}}

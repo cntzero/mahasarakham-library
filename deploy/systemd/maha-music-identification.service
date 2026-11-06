@@ -1,0 +1,21 @@
+[Unit]
+Description=MAHA manual audio recognition and metadata review
+After=network-online.target maha-library-api.service
+Wants=network-online.target
+RequiresMountsFor=/mnt/data/survival-library/music
+[Service]
+User=@SERVICE_USER@
+Group=@SERVICE_USER@
+ExecStart=/usr/bin/python3 /opt/maha-library-api/music_identify_worker.py
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/mnt/data/survival-library/music
+MemoryMax=768M
+TasksMax=32
+[Install]
+WantedBy=multi-user.target

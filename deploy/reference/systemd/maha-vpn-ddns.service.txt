@@ -1,0 +1,18 @@
+# /etc/systemd/system/maha-vpn-ddns.service
+[Unit]
+Description=Keep vpn.discerntechnologies.com pointed at this home connection
+Wants=network-online.target
+After=network-online.target
+[Service]
+Type=oneshot
+DynamicUser=yes
+LoadCredential=godaddy-pat:/etc/maha-vpn-ddns/token
+StateDirectory=maha-vpn-ddns
+ExecStart=/usr/bin/python3 /opt/maha-vpn-ddns/update.py
+TimeoutStartSec=120
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX

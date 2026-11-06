@@ -1,0 +1,32 @@
+[Unit]
+Description=MAHA local book uploads and catalog
+After=network.target
+RequiresMountsFor=/mnt/data/survival-library/imported-books
+[Service]
+User=@SERVICE_USER@
+Group=@SERVICE_USER@
+ExecStart=/usr/bin/python3 /opt/maha-library-api/server.py
+Restart=on-failure
+Environment=QT_QPA_PLATFORM=offscreen
+Environment=MAHA_IMPORT_ROOT=/mnt/data/survival-library/imported-books
+UMask=0022
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+IPAddressDeny=any
+IPAddressAllow=localhost
+ReadWritePaths=/mnt/data/survival-library/imported-books
+MemoryMax=2G
+TasksMax=128
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Environment=MAHA_REQUIRE_AUTH=1
+Environment=MAHA_AUTH_DB=/srv/maha-library-api/accounts.sqlite
+Environment=MAHA_PUBLIC_URL=https://@LAN_IP@/
+ReadWritePaths=/srv/maha-library-api
+
+[Service]
+ReadWritePaths=/mnt/data/survival-library/music

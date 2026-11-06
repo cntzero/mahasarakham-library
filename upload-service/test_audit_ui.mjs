@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync,readdirSync} from 'node:fs';
+import vm from 'node:vm';
+const dist=new URL('../dist/',import.meta.url);
+for(const name of readdirSync(dist).filter(n=>n.endsWith('.js')))new vm.Script(readFileSync(new URL(name,dist),'utf8'),{filename:name});
+const login=readFileSync(new URL('login.js',dist),'utf8');
+const context=vm.createContext({URL,location:{origin:'https://maha.test'}});
+vm.runInContext(login.slice(login.indexOf('function safeDestination'),login.indexOf('const originalDestination')),context);
+for(const bad of ['https://evil.test/a','//evil.test','javascript:alert(1)','/login.html','/api/library/logout'])assert.equal(context.safeDestination(bad),'/index.html');
+assert.equal(context.safeDestination('/kiwix/content/book/A/Water?x=1#section'),'/kiwix/content/book/A/Water?x=1#section');
+const html=readFileSync(new URL('login.html',dist),'utf8');assert.ok(html.includes('href="/upload.css"'));assert.ok(html.includes('src="/login.js"'));
+const archive=readFileSync(new URL('archives.js',dist),'utf8');
+vm.runInContext(archive.slice(archive.indexOf('function isArticle'),archive.indexOf('const q=')),context);
+assert.equal(context.isArticle({title:'Rainwater storage',domain:'www.askaprepper.com',path:'www.askaprepper.com/rainwater/index.html'}),true);
+for(const page of [{title:'Rainwater',domain:'www.askaprepper.com',path:'/rainwater/feed/index.html'},{title:'index32ca',domain:'commons.m.wikimedia.org',path:'/w/index32ca.html'},{title:'LifeStraw',domain:'affiliates.survivalfrog.com',path:'/image/lifestraw.html'}])assert.equal(context.isArticle(page),false);
+const index=readFileSync(new URL('index.html',dist),'utf8');assert.ok(index.includes('aria-labelledby="detail-title"'));assert.ok(index.includes('Clear all filters'));
+const reader=readFileSync(new URL('reader.html',dist),'utf8');for(const id of ['contents-toggle','smaller','larger'])assert.ok(reader.includes('id="'+id+'" disabled'));
+console.log('Frontend syntax, safe login destinations, nested login assets, article filtering, dialog label and reader loading controls: passed');
