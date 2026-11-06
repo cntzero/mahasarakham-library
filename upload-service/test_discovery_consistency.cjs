@@ -17,3 +17,5 @@ assert(fs.readFileSync(path.join(root,'browse.js'),'utf8').includes('discovery-i
 assert(fs.readFileSync(path.join(root,'music.js'),'utf8').includes('discovery-item discovery-record'));
 assert(fs.readFileSync(path.join(root,'knowledge-discoveries.js'),'utf8').includes('discovery-item discovery-site'));
 console.log('Books, Music and Knowledge share hero, panel, scroll lane, controls, CSS order and breakpoints; duplicate Music geometry removed: passed');
+
+const repair=fs.readFileSync(path.join(root,'layout-repair.css'),'utf8');assert(!repair.includes('.repair-catalog .hero,.repair-catalog #home-hero{display:none!important}'),'Catalog styling must not hide shared Daily Discoveries');assert(repair.includes('.hero:not(.discovery-hero)'),'Shared discovery heroes must remain visible on catalog pages');
