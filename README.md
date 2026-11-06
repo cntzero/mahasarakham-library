@@ -4,6 +4,12 @@ Private, self-hosted home library for books, offline knowledge, preserved websit
 
 Current source release: **v1.0.0**. See [release notes](CHANGELOG.md) and [music visualizer details](docs/MUSIC-VISUALIZER.md).
 
+## Screenshots
+
+![MAHA Home](docs/screenshots/home.png)
+
+[View the screenshot gallery](docs/SCREENSHOTS.md): books, music, album details, the persistent player, offline knowledge and phone layout. Captured from the real self-hosted server.
+
 ## Start here
 
 - [Complete server setup](docs/SERVER-SETUP.md): requirements and all steps for a clean Ubuntu host.
