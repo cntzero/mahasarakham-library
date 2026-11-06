@@ -9,3 +9,5 @@
 #dock-favorite svg{display:block;margin:auto;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7}#dock-favorite[aria-pressed=true] svg{fill:currentColor}
 
 .listen-panel-head{gap:8px}.listen-panel-head h2{flex:1}#dock-favorite{min-width:44px;flex-basis:44px}
+
+#dock-library{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;background:var(--raised);color:var(--ink);font-weight:600;text-decoration:none}#dock-library:hover{border-color:var(--accent);background:var(--surface)}#dock-library:active{background:var(--raised)}
