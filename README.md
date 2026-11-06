@@ -2,6 +2,8 @@
 
 Private, self-hosted home library for books, offline knowledge, preserved websites, and music. Includes the responsive interface, persistent music player, local accounts, imports, playlists/favorites, metadata review, artwork workers, deployment references, and tests.
 
+Current source release: **v1.0.0**. See [release notes](CHANGELOG.md) and [music visualizer details](docs/MUSIC-VISUALIZER.md).
+
 ## Start here
 
 - [Complete server setup](docs/SERVER-SETUP.md): requirements and all steps for a clean Ubuntu host.
