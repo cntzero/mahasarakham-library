@@ -26,7 +26,7 @@ dialog.ui-filter-panel{position:fixed;inset:auto;margin:0!important;width:min(36
 dialog.ui-filter-panel .catalog-controls,dialog.ui-filter-panel .music-filters{margin-bottom:0;gap:14px}dialog.ui-filter-panel .ui-panel-note{margin:0 0 14px;font-size:12px}
 
 /* Browsing uses available space; reading pages keep their own line lengths. */
-body.repair-catalog>main.wrap{width:100%;max-width:none;padding-inline:clamp(16px,3vw,48px);box-sizing:border-box}
-.repair-catalog .books,.repair-catalog .archive-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+body.repair-catalog>main.wrap,body:has(#home-hero)>main.wrap{width:100%;max-width:none;padding-inline:clamp(16px,3vw,48px);box-sizing:border-box}
+.repair-catalog .books,body:has(#home-hero) .books,.repair-catalog .archive-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
 .repair-catalog .music-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
-@media(max-width:650px){.repair-catalog .books,.repair-catalog .archive-grid,.repair-catalog .music-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.repair-catalog .books,body:has(#home-hero) .books,.repair-catalog .archive-grid,.repair-catalog .music-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
